@@ -1,0 +1,21 @@
+#include <rtthread.h>
+#include <rtdevice.h>
+#include <morse.h>
+#include "drv_common.h"
+
+#define USER_KEY GET_PIN(H,4)
+
+void irq_callback()
+{
+    morse_input(!rt_pin_read(USER_KEY));
+}
+
+int morse_key_example(void)
+{
+    rt_pin_mode(USER_KEY, PIN_MODE_INPUT_PULLUP);
+    rt_pin_attach_irq(USER_KEY, PIN_IRQ_MODE_RISING_FALLING, irq_callback, RT_NULL);
+    rt_pin_irq_enable(USER_KEY, PIN_IRQ_ENABLE);
+    morse_init();
+}
+
+INIT_APP_EXPORT(morse_key_example);
