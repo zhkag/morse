@@ -7,8 +7,12 @@ static rt_timer_t morse_timer;
 rt_tick_t millisecond = 0;
 rt_bool_t morse_flag = RT_FALSE;
 rt_uint16_t morse_value = 0x01;
-rt_uint8_t morse_char = 0xff;
 rt_uint8_t morse_num_max = 0;
+
+#ifdef PKG_USING_MORSE_SHELL
+static struct rt_messagequeue morse_mq;
+static rt_uint8_t msg_pool[8];
+#endif
 
 typedef struct {
     rt_uint16_t id;
@@ -37,8 +41,10 @@ static const morse_equivalent morse_equivalent_type[] = {
 
 void morse_timeout(void *parameter)
 {
-    morse_char = morse_analysis(morse_value);
-#ifndef PKG_USING_MORSE_SHELL
+    rt_uint8_t morse_char = morse_analysis(morse_value);
+#ifdef PKG_USING_MORSE_SHELL
+    rt_mq_send(&morse_mq, &morse_char, 1);
+#else
     rt_kprintf("%c",morse_char);
 #endif
     dida_clean();
@@ -48,13 +54,9 @@ void morse_timeout(void *parameter)
 rt_uint8_t morse_getc()
 {
     int ch;
-    while (morse_char == 0xff)
-    {
-        rt_thread_mdelay(100);
-    }
-    ch = morse_char;
-    morse_char = 0xff;
-    return ch;
+    if (rt_mq_recv(&morse_mq, &ch, sizeof(ch), RT_WAITING_FOREVER) == RT_EOK)
+        return ch;
+    return 0xff;
 }
 #endif
 
@@ -124,6 +126,18 @@ int morse_init(void)
     morse_timer = rt_timer_create("morse", morse_timeout,
                                   RT_NULL, 0,
                                   RT_TIMER_FLAG_ONE_SHOT);
+
+#ifdef PKG_USING_MORSE_SHELL
+    /* 初始化消息队列 */
+    rt_err_t result = rt_mq_init(&morse_mq,
+                                 "morse",
+                                 &msg_pool[0],      /* 内存池指向 msg_pool */
+                                 1,                 /* 每个消息的大小是 1 字节 */
+                                 sizeof(msg_pool),  /* 内存池的大小是 msg_pool 的大小 */
+                                 RT_IPC_FLAG_PRIO); /* 如果有多个线程等待，优先级大小的方法分配消息 */
+    if (result != RT_EOK)
+        rt_kprintf("init message queue failed.\n");
+#endif
     return 0;
 }
 
