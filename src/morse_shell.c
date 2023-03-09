@@ -15,6 +15,7 @@ void morse_shell_entry(void *parameter)
 {
     int ch;
     struct morse_shell shell;
+    shell.line_position = 0;
     memset(shell.line, 0, sizeof(shell.line));
     while (1)
     {
