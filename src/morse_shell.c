@@ -61,7 +61,7 @@ int morse_shell_example(void)
 {
     rt_thread_t tid;
     tid = rt_thread_create("mshell", morse_shell_entry, RT_NULL, 4096, 20, 10);
-
+    morse_init();
     if (tid != NULL)
         rt_thread_startup(tid);
     return RT_EOK;
