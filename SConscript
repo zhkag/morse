@@ -12,7 +12,7 @@ if GetDepend(['PKG_USING_MORSE_SHELL']):
 if GetDepend(['PKG_USING_MORSE_SAMPLE']):
 	if GetDepend(['PKG_USING_MORSE_KEY_SAMPLE']):
 		src += Split("""
-		samples/morse-key-example.c
+		samples/key/morse-key-example.c
 		""")
 	if GetDepend(['PKG_USING_MORSE_TPAD_SAMPLE']):
 		CPPPATH += [cwd + '/samples/tpad']

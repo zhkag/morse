@@ -56,7 +56,7 @@ void morse_shell_entry(void *parameter)
     }
 }
 
-int morse_key_example(void)
+int morse_shell_example(void)
 {
     rt_thread_t tid;
     tid = rt_thread_create("mshell", morse_shell_entry, RT_NULL, 4096, 20, 10);
@@ -66,4 +66,4 @@ int morse_key_example(void)
     return RT_EOK;
 }
 
-INIT_APP_EXPORT(morse_key_example);
+INIT_APP_EXPORT(morse_shell_example);
