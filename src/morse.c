@@ -116,7 +116,7 @@ void morse_input(rt_bool_t flag)
     }
 }
 
-void morse_init()
+int morse_init(void)
 {
     rt_uint8_t var = 0;
     for (; morse_equivalent_type[var].id != 0b1; ++var);
@@ -124,4 +124,9 @@ void morse_init()
     morse_timer = rt_timer_create("morse", morse_timeout,
                                   RT_NULL, 0,
                                   RT_TIMER_FLAG_ONE_SHOT);
+    return 0;
 }
+
+#ifndef PKG_USING_MORSE_SHELL
+INIT_APP_EXPORT(morse_init);
+#endif

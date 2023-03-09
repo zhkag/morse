@@ -17,7 +17,7 @@ int morse_key_example(void)
     rt_pin_mode(USER_KEY, PIN_MODE_INPUT_PULLUP);
     rt_pin_attach_irq(USER_KEY, PIN_IRQ_MODE_RISING_FALLING, irq_callback, RT_NULL);
     rt_pin_irq_enable(USER_KEY, PIN_IRQ_ENABLE);
-    morse_init();
+    return 0;
 }
 
 INIT_APP_EXPORT(morse_key_example);
