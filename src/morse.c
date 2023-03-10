@@ -128,13 +128,13 @@ int morse_init(void)
                                   RT_TIMER_FLAG_ONE_SHOT);
 
 #ifdef PKG_USING_MORSE_SHELL
-    /* ³õÊ¼»¯ÏûÏ¢¶ÓÁĞ */
+    /* åˆå§‹åŒ–æ¶ˆæ¯é˜Ÿåˆ— */
     rt_err_t result = rt_mq_init(&morse_mq,
                                  "morse",
-                                 &msg_pool[0],      /* ÄÚ´æ³ØÖ¸Ïò msg_pool */
-                                 1,                 /* Ã¿¸öÏûÏ¢µÄ´óĞ¡ÊÇ 1 ×Ö½Ú */
-                                 sizeof(msg_pool),  /* ÄÚ´æ³ØµÄ´óĞ¡ÊÇ msg_pool µÄ´óĞ¡ */
-                                 RT_IPC_FLAG_PRIO); /* Èç¹ûÓĞ¶à¸öÏß³ÌµÈ´ı£¬ÓÅÏÈ¼¶´óĞ¡µÄ·½·¨·ÖÅäÏûÏ¢ */
+                                 &msg_pool[0],      /* å†…å­˜æ± æŒ‡å‘ msg_pool */
+                                 1,                 /* æ¯ä¸ªæ¶ˆæ¯çš„å¤§å°æ˜¯ 1 å­—èŠ‚ */
+                                 sizeof(msg_pool),  /* å†…å­˜æ± çš„å¤§å°æ˜¯ msg_pool çš„å¤§å° */
+                                 RT_IPC_FLAG_PRIO); /* å¦‚æœæœ‰å¤šä¸ªçº¿ç¨‹ç­‰å¾…ï¼Œä¼˜å…ˆçº§å¤§å°çš„æ–¹æ³•åˆ†é…æ¶ˆæ¯ */
     if (result != RT_EOK)
         rt_kprintf("init message queue failed.\n");
 #endif
