@@ -20,6 +20,11 @@ if GetDepend(['PKG_USING_MORSE_SAMPLE']):
 		samples/tpad/tpad.c
 		samples/tpad/morse-tpad-example.c
 		""")
+	if GetDepend(['PKG_USING_MORSE_SLIDER_SAMPLE']):
+		CPPPATH += [cwd + '/samples/slider']
+		src += Split("""
+		samples/slider/morse-slider-example.c
+		""")
 
 group = DefineGroup('morse', src, depend = ['PKG_USING_MORSE'], CPPPATH = CPPPATH)
 
