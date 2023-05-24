@@ -7,7 +7,7 @@
 
 #define USER_KEY GET_PIN(D, 10) // GET_PIN(H,4)
 
-void irq_callback()
+static void irq_callback()
 {
     morse_input(!rt_pin_read(USER_KEY));
 }
